@@ -1,0 +1,141 @@
+ORG 0100h
+
+.DATA
+
+ev_ar db 6 dup <'0'>
+odd_arr db 6 dup <'0'>
+in_str db 'Input : $'
+out_str db 'Output : $'
+num db 0
+odd dw 0
+ev dw 0
+temp db 0
+lim dw 0
+
+ex1 db 0
+ex2 db 0
+
+ev_str db 'Even Numbers : $'
+odd_str db 'Odd Numbers : $'
+
+
+.CODE         
+MAIN PROC 
+
+MOV AH,9
+LEA DX,in_str
+INT 21h
+    
+MOV AH, 1
+INT 21h
+MOV num, AL
+SUB num,'0'
+ADD num,1
+
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h
+
+MOV SI,0
+MOV DI,0
+MOV BL,0
+MOV CH,0
+MOV CL,num
+    
+LOOP_1:
+    MOV temp,1
+    AND temp,BL
+    CMP temp,1
+    JE odd_  ;odd
+    JNE even_ ;even
+    
+    odd_:
+        MOV odd_arr[DI],BL 
+        MOV ex1, BL
+        INC DI
+        JMP cont
+
+
+    even_: 
+        MOV ex2, BL
+        MOV ev_ar[SI],BL  
+        INC SI
+        JMP cont
+    
+    cont:
+    INC BL
+    LOOP LOOP_1
+    
+MOV ev, SI  
+MOV odd, DI 
+
+MOV ev_ar[SI],'$'
+MOV odd_arr[DI],'$'
+
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h
+       
+
+MOV AH,9
+LEA DX,odd_str
+INT 21h
+ 
+MOV CX,odd
+MOV DI,0
+
+LOOP_3:
+    MOV BL,odd_arr[DI]
+    
+    MOV AH,2
+    ADD BL,'0'
+    MOV DL, BL
+    INT 21h
+    
+    MOV AH,2
+    MOV DL,' ' 
+    INT 21h
+    
+    INC DI
+    
+    LOOP LOOP_3
+
+       
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h    
+     
+     
+MOV AH,9
+LEA DX,ev_str
+INT 21h
+ 
+MOV CX,ev
+MOV SI,0
+
+LOOP_2:
+    MOV BL,ev_ar[SI]
+    
+    MOV AH,2
+    ADD Bl,'0'
+    MOV DL, BL
+    INT 21h
+    
+    MOV AH,2
+    MOV DL,' ' 
+    INT 21h
+    
+    INC SI
+    
+    LOOP LOOP_2   
+
+
+MAIN ENDP
+END MAIN
+RET

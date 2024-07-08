@@ -1,0 +1,172 @@
+ORG 0100h
+
+.DATA 
+out_str db 35 DUP(0)
+dat db 0
+str_1 db 'UPPERCASE CHARACTER FORWARD : $'    
+str_2 db 'UPPERCASE CHARACTER REVERSE : $'    
+str_3 db 'LOWERCASE CHARACTER FORWARD : $'    
+str_4 db 'LOWERCASE CHARACTER REVERSE : $'    
+str_5 db 'NUMBER FORWARD : $'    
+str_6 db 'NUMBER REVERSE : $'    
+         
+         
+.CODE         
+MAIN PROC 
+    
+
+MOV AH,9
+LEA DX,str_1
+INT 21h
+
+MOV CX,26
+MOV BL,'A'
+    
+LOOP_1:
+    MOV AH,2
+    MOV DL,BL
+    INT 21h
+    
+    MOV AH,2
+    MOV DL,' '
+    INT 21h
+    
+    INC BL
+    LOOP LOOP_1
+
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h
+
+
+MOV AH,9
+LEA DX,str_2
+INT 21h
+
+
+MOV CX,26
+MOV BL,'Z'
+    
+LOOP_2:
+    MOV AH,2
+    MOV DL,BL
+    INT 21h
+    
+    MOV AH,2
+    MOV DL,' '
+    INT 21h
+    
+    DEC BL
+    LOOP LOOP_2
+
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h
+ 
+ 
+MOV AH,9
+LEA DX,str_3
+INT 21h
+
+MOV CX,26
+MOV BL,'a'
+    
+LOOP_3:
+    MOV AH,2
+    MOV DL,BL
+    INT 21h
+    
+    MOV AH,2
+    MOV DL,' '
+    INT 21h
+    
+    INC BL
+    LOOP LOOP_3
+    
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h
+
+
+MOV AH,9
+LEA DX,str_4
+INT 21h
+
+MOV CX,26
+MOV BL,'z'
+    
+LOOP_4:
+    MOV AH,2
+    MOV DL,BL
+    INT 21h
+    
+    MOV AH,2
+    MOV DL,' '
+    INT 21h
+    
+    DEC BL
+    LOOP LOOP_4
+    
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h
+
+
+MOV AH,9
+LEA DX,str_5
+INT 21h
+
+MOV CX,10
+MOV BL,'0'
+    
+LOOP_5:
+    MOV AH,2
+    MOV DL,BL
+    INT 21h
+    
+    MOV AH,2
+    MOV DL,' '
+    INT 21h
+    
+    INC BL
+    LOOP LOOP_5
+
+
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h
+
+MOV AH,9
+LEA DX,str_5
+INT 21h
+
+MOV CX,10
+MOV BL,'9'
+    
+LOOP_6:
+    MOV AH,2
+    MOV DL,BL
+    INT 21h
+    
+    MOV AH,2
+    MOV DL,' '
+    INT 21h
+    
+    DEC BL
+    LOOP LOOP_6
+    
+
+
+MAIN ENDP
+END MAIN
+RET

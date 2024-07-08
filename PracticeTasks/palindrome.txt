@@ -1,0 +1,82 @@
+ORG 100h
+
+.DATA
+
+in_str db 4 DUP(0)
+pal db 0
+msg_1 db 'Palindrome $'
+msg_2 db 'Not Palindrome $'
+
+
+.CODE
+
+MAIN PROC
+
+
+MOV CX,3
+MOV SI,0
+
+LOOP_1:
+    MOV AH,1
+    INT 21H
+    MOV in_str[SI],AL
+    INC SI
+    LOOP LOOP_1
+
+DEC SI
+MOV DI,0
+MOV CX,3
+    
+LOOP_2:
+    MOV BL,in_str[DI]
+    CMP in_str[SI],BL
+    JE  continue
+    JNE done
+    
+    continue:
+        DEC SI
+        INC DI
+        JMP next
+    
+    done:
+        MOV pal,1
+        JMP print_
+        
+         
+    next:
+    
+    LOOP LOOP_2
+
+MOV AH,2
+MOV DL,0DH
+INT 21H
+MOV AL,2
+MOV DH,0AH
+INT 21H
+    
+
+print_:
+    CMP pal,1
+    JE palindrome
+    JNE not_palindrome
+    
+    
+    palindrome:
+          MOV AH,9
+          LEA DX,msg_2
+          INT 21H
+          RET
+    
+    not_palindrome:
+          MOV AH,9
+          LEA DX,msg_1
+          INT 21H
+          RET
+
+
+ 
+    
+    
+MAIN ENDP
+END MAIN
+RET

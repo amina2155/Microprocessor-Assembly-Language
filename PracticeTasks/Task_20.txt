@@ -1,0 +1,98 @@
+ORG 0100h
+
+.DATA 
+out_str db 35 DUP(0)
+dat db 0
+str_1 db 'Input String : $'    
+str_2 db 'Output String : $' 
+str_3 db 'Output : $'             
+         
+.CODE         
+MAIN PROC 
+    
+
+MOV CX,26
+MOV BL,'Z'
+    
+LOOP_1:
+    MOV AH,2
+    MOV DL,BL
+    INT 21h
+    
+    MOV AH,2
+    MOV DL,' '
+    INT 21h
+    
+    DEC BL
+    LOOP LOOP_1
+
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h
+
+MOV CX,26
+MOV BL,'z'
+    
+LOOP_2:
+    MOV AH,2
+    MOV DL,BL
+    INT 21h
+    
+    MOV AH,2
+    MOV DL,' '
+    INT 21h
+    
+    DEC BL
+    LOOP LOOP_2
+    
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h
+
+MOV CX,10
+MOV BL,'9'
+    
+LOOP_3:
+    MOV AH,2
+    MOV DL,BL
+    INT 21h
+    
+    MOV AH,2
+    MOV DL,' '
+    INT 21h
+    
+    DEC BL
+    LOOP LOOP_3
+
+
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h
+
+MOV CX,254
+MOV BL,0
+    
+LOOP_4:
+    MOV AH,2
+    MOV DL,CL
+    INT 21h
+    
+    MOV AH,2
+    MOV DL,' '
+    INT 21h
+    
+    ;DEC BL
+    LOOP LOOP_4
+    
+    
+
+
+MAIN ENDP
+END MAIN
+RET

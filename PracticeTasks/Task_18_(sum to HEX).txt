@@ -1,0 +1,127 @@
+MDSPLY_STRING MACRO STRING ; Declaration of MACRO
+    ;xor dx, dx
+    MOV DX, OFFSET STRING
+    CALL DSPLY_STRING ; Calling the Procedure
+
+ENDM 
+
+ORG 0100H
+
+.DATA     
+
+result db 0  
+MSG DB 'SUM: ', '$'
+ENDL DB '', 0DH, 0AH,'$'
+
+.CODE
+
+MAIN PROC
+
+    MOV result, 0
+    MOV CL, 5
+    
+    loop_input: 
+        MOV AX,0
+        MOV AH, 01h
+        INT 21h
+        MOV BL, AL 
+        SUB BL, 48
+        ADD result, BL
+        
+        LOOP loop_input
+        
+    MDSPLY_STRING ENDL
+    MDSPLY_STRING MSG
+    
+    MOV AX, 0
+    MOV AL, result
+    MOV BL, 16
+    DIV BL
+    
+    MOV BL, AL ;quotient
+    MOV CL, AH ;remainder
+    
+    ;cmp bl, 0
+    ;je less_than_10
+    
+    
+    ADD BL,'0'
+    MOV AH, 02h
+    MOV DL, BL
+    INT 21h
+    
+    CMP CL, 9
+    JLE less_than_10
+    CMP CL, 10
+    JE A
+    CMP CL, 11
+    JE B
+    CMP CL, 12
+    JE C
+    CMP CL, 13
+    JE D
+    CMP CL, 14
+    JE E
+    CMP CL, 15
+    JE F
+    
+    
+    A:
+        MOV BL, 'A'
+        CALL DSPLY_CHAR
+        JMP cont  
+    B:
+        MOV BL, 'B'
+        CALL DSPLY_CHAR
+        JMP cont
+    C:
+        MOV BL, 'C'
+        CALL DSPLY_CHAR
+        JMP cont
+    D:
+        MOV BL, 'D'
+        CALL DSPLY_CHAR
+        JMP cont
+    E:
+        MOV BL, 'E'
+        CALL DSPLY_CHAR
+        JMP cont                 
+    F:
+        MOV BL, 'F'
+        CALL DSPLY_CHAR
+        JMP cont 
+        
+    less_than_10:
+        MOV BL, CL
+        ADD BL, '0'
+        CALL DSPLY_CHAR
+        JMP cont
+                    
+                    
+     cont:
+     
+     
+     
+     
+RET   
+   
+MAIN ENDP
+ 
+
+DSPLY_STRING PROC ; Declaration of PROCEDURE
+    ;xor ax, ax
+    MOV AH, 09H
+    INT 21H
+    RET
+DSPLY_STRING ENDP   
+
+DSPLY_CHAR PROC ; Print the last hex character
+    mov ah, 02h
+    mov dl, bl
+    int 21h
+    RET
+    
+DSPLY_CHAR ENDP
+                    
+END MAIN
+RET

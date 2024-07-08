@@ -1,0 +1,103 @@
+
+; AASHNAN RAHMAN 
+; 190041204
+
+ORG 100h
+
+.DATA
+
+num1 db '0'
+num2 db '0'
+max_ db '0' 
+rem1 db '0'
+rem2 db '0'
+prod db 0
+lim db 0
+prime db 0
+temp db 2
+var db 0 
+val db 0
+one db 1
+
+
+.CODE
+
+MAIN PROC
+
+    MOV AH,1h
+    INT 21h
+    SUB AL,'0'
+    MOV num1,AL 
+
+    MOV AH, 2h
+    MOV DL, ' '
+    INT 21h
+
+    MOV AH,1h
+    INT 21h
+    SUB AL,'0'
+    MOV num2,AL
+    
+    MOV AX,1
+    MUL num1
+    MUL num2
+    MOV prod,AL
+    MOV BL,AL
+    
+    DIV temp
+    MOV lim,AL
+    INC lim
+    
+    MOV CX,0
+    MOV CL,prod
+    DEC CX
+    
+    LOOP_1:
+    MOV prime,0
+    MOV AX,CX
+    
+    MOV temp,CL
+    MOV CL,lim
+    MOV DX,2
+    
+    
+    
+    LOOP_2:
+    
+    MOV val,AL
+    DIV DL
+    CMP AH,0
+    
+    JE no
+    
+    
+    
+    INC DX
+    MOV AH,0
+    MOV AL,val
+    
+    LOOP LOOP_2
+    
+    CMP prime,0
+    JE done
+   
+    
+    continue:
+    MOV CL,temp 
+    LOOP LOOP_1
+    
+
+
+RET        
+
+ENDP
+
+
+no:
+ MOV prime,1
+ JMP continue 
+ 
+done:
+
+
+END MAIN

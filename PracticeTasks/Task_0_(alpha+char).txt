@@ -1,0 +1,65 @@
+ORG 0100h
+
+.DATA
+alpha db 0h
+num db 0h
+str_1 db 'Input alphabet : $'    
+str_2 db 'Input Value N : $' 
+str_3 db 'Output : $'             
+         
+.CODE         
+MAIN PROC 
+    
+MOV AH,9
+LEA DX,str_1
+INT 21h
+    
+MOV AH, 1
+INT 21h
+MOV alpha, AL
+
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h
+
+MOV AH,9
+LEA DX,str_2
+INT 21h
+    
+MOV AH, 1
+INT 21h
+MOV num, AL
+SUB num,'0' 
+
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h
+
+MOV CL,alpha
+ADD CL,num
+CMP CL,5Ah
+
+JG MODD
+JLE BACK
+
+MODD:
+SUB CL,91
+ADD CL,'A'
+JMP BACK
+
+BACK:
+MOV AH,9
+LEA DX,str_3
+INT 21h     
+
+MOV AH,2
+MOV DL, CL
+INT 21h  
+
+MAIN ENDP
+END MAIN
+RET

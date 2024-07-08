@@ -1,0 +1,118 @@
+MDSPLY_STRING MACRO STRING 
+    MOV DX, OFFSET STRING
+    CALL DSPLY_STRING 
+ENDM  
+
+ORG 0100H
+.DATA     
+
+CNT db 10 DUP(0)
+
+MSG1 DB 'PRIME ASCENDING : ', '$'
+ENDL DB '', 0DH, 0AH,'$'
+SPC DB ' ', '$' 
+TEMP DB 0 
+x DB 0
+
+.CODE
+
+MAIN PROC
+
+;MOV AH, 01h
+;INT 21h
+;MOV CL, AL
+;SUB CL, '0'
+MOV CL,8
+    
+MDSPLY_STRING ENDL
+   
+Loop_input:
+    MOV AX,0
+    MOV AH, 01h
+    INT 21h
+    MOV BL, AL
+    SUB BL, '0'
+    MOV BH, 0
+    MOV SI, BX
+    INC CNT[SI]
+    LOOP Loop_input    
+   
+     
+    MDSPLY_STRING ENDL                   
+   
+    MDSPLY_STRING MSG1 
+   
+   
+    MOV CL, 5
+    
+    MOV BL, 2
+    
+    Loop_prime:        
+        MOV BH, 0
+        MOV SI, BX
+        MOV DL, CNT[SI]
+        MOV x, DL
+        CMP x, 0
+        MOV TEMP, CL
+        JG print_prime
+       
+        CMP x, 0
+        JE continue_1
+       
+        print_prime:    
+          MOV CL, x
+          MOV BH, BL
+          ADD BH, '0'
+          
+          Loop_print_prime:
+            MOV AX, 0
+            MOV DX, 0
+            MOV AH, 02h
+            MOV DL, bh
+            INT 21h 
+            MDSPLY_STRING SPC
+            
+            loop Loop_print_prime
+                  
+          
+          
+         continue_1:
+           CMP BL,2
+           JE BOOST
+           JNE ELSE
+           
+           BOOST:
+           INC BL
+           JMP continue_2
+           
+           ELSE: 
+           INC BL
+           INC BL
+           JMP continue_2
+           
+           continue_2:
+           MOV CL, TEMP
+           CMP BL,9
+           JE FIN 
+           
+         
+         LOOP Loop_prime
+         
+         FIN:
+         
+         
+     
+RET   
+   
+MAIN ENDP
+ 
+
+DSPLY_STRING PROC ; Declaration of PROCEDURE
+    ;xor ax, ax
+    MOV AH, 09H
+    INT 21H
+    RET
+DSPLY_STRING ENDP
+                    
+END MAIN
+RET

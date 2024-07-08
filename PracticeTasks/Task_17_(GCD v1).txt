@@ -1,0 +1,116 @@
+
+; AASHNAN RAHMAN 
+; 190041204
+
+ORG 100h
+
+.DATA
+
+num1 db '0'
+num2 db '0'
+max_ db '0' 
+LCM db '0'
+rem1 db '0'
+rem2 db '0'
+GCD db '0'
+
+.CODE
+
+MAIN PROC
+
+    MOV AH,1h
+    INT 21h
+    SUB AL,'0'
+    MOV num1,AL 
+
+    CALL newline
+
+    MOV AH,1h
+    INT 21h
+    SUB AL,'0'
+    MOV num2,AL
+    MOV max_,AL
+    
+   ; CALL newline  
+
+    CALL LCM_ 
+    
+    CALL GCD_
+
+
+RET        
+
+ENDP       
+           
+           
+newline PROC
+    MOV ah, 2h
+    MOV dl, 0dh
+    INT 21h
+    
+    MOV ah, 2h
+    MOV dl, 0ah
+    INT 21h
+    RET    
+newline ENDP
+   
+   
+LCM_ PROC
+   
+lp1:   
+   MOV AX, 0h 
+   MOV AL, max_
+   DIV num1
+   MOV DL, AH
+   
+   MOV AX, 0h 
+   MOV AL, max_
+   DIV num2
+   MOV DH, AH
+   
+   OR DL,DH
+   CMP DL,0H
+   
+   JE  done 
+   JNE oops
+   
+   done:
+    MOV DH, max_
+    MOV LCM,DH
+    RET        
+            
+   oops:
+    INC max_ 
+   
+   loop lp1
+   
+   
+   
+   
+   RET       
+   
+   
+LCM_ ENDP
+         
+         
+         
+GCD_ PROC
+
+   MOV AX,0h
+   MOV AL,num1
+   MUL num2
+   
+   DIV LCM
+   
+   MOV GCD,AL    
+
+   RET       
+   
+   
+GCD_ ENDP
+
+
+
+
+
+END MAIN

@@ -1,0 +1,75 @@
+ORG 0100h
+
+.DATA
+in_str db 'Islamic University of Technology$' 
+out_str db 35 DUP(0)
+dat db 0
+str_1 db 'Input String : $'    
+str_2 db 'Output String : $' 
+str_3 db 'Output : $'             
+         
+.CODE         
+MAIN PROC 
+    
+MOV AH,9
+LEA DX,in_str
+INT 21h
+
+MOV AH, 2
+MOV DL, 0DH
+INT 21h
+MOV DL, 0AH
+INT 21h
+
+MOV SI,0h
+MOV DI,31
+MOV CX,32 ;33
+    
+LOOP_1:
+    MOV BL,in_str[DI]
+    MOV out_str[SI],BL
+    
+    ;MOV AH,2
+    ;MOV DL,out_str[SI]
+    ;INT 21h
+    
+    INC SI
+    DEC DI
+    LOOP LOOP_1
+
+MOV out_str[SI],'$'
+
+MOV CX,10
+
+LOOP_2:
+    MOV AH,9
+    LEA DX,in_str
+    INT 21h
+    
+    MOV AH, 2
+    MOV DL, 0DH
+    INT 21h
+    MOV DL, 0AH
+    INT 21h
+    
+    MOV AH,9
+    LEA DX,out_str
+    INT 21h
+    
+    MOV AH, 2
+    MOV DL, 0DH
+    INT 21h
+    MOV DL, 0AH
+    INT 21h
+    
+    LOOP LOOP_2
+
+
+
+    
+
+
+
+MAIN ENDP
+END MAIN
+RET
